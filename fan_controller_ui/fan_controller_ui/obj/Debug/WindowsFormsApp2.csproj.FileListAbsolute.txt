@@ -1,0 +1,9 @@
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.Form1.resources
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.GenerateResource.Cache
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.CoreCompileInputs.cache
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\fan_controller_ui.exe.config
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\fan_controller_ui.exe
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\fan_controller_ui.pdb
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\fan_controller_ui.Properties.Resources.resources
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\fan_controller_ui.exe
+C:\Users\adamb\source\repos\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\fan_controller_ui.pdb
