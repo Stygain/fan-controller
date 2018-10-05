@@ -6,12 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Ports;
 using System.Windows.Forms;
 
 namespace fan_controller_ui_window
 {
     public partial class ui_form : Form
     {
+        // Create the serial port with basic settings
+        private SerialPort port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
+
         public ui_form()
         {
             InitializeComponent();
@@ -23,6 +27,7 @@ namespace fan_controller_ui_window
             fanSpeedBar.Value = 5;
             sendButton.Text = "Send";
             statusLabel.Text = "Status Good";
+            port.Open();
 
             sendButton.Click += new System.EventHandler(this.send_click);
         }
@@ -30,6 +35,12 @@ namespace fan_controller_ui_window
         private void send_click(object sender, EventArgs e)
         {
             Console.WriteLine("got clicked");
+            send_serial_data();
+        }
+
+        private void send_serial_data()
+        {
+            port.Write("abcde");
         }
     }
 }

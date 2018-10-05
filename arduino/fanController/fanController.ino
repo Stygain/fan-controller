@@ -305,15 +305,22 @@ void setPwmFrequency(int pin, int divisor) {
 }
 //end arduino code
 
+String serial_read = "";
+
 void loop() {
 
-//  if (Serial.available() > 0) {
-//    int incomingByte = Serial.read();
-////    Serial.print("I received: ");
-////    Serial.println(incomingByte, DEC);
-//    lcd.setCursor(5,1);
-//    lcd.print(incomingByte);
-//  }
+  if (Serial.available() > 0) {
+    int incomingByte = Serial.read();
+//    Serial.print("I received: ");
+//    Serial.println(incomingByte, DEC);
+    char char_rec = (char)incomingByte;
+    serial_read = serial_read + char_rec;
+  }
+  if (serial_read.length() == 5) {
+    lcd.setCursor(5,1);
+    lcd.print(serial_read);
+    serial_read = "";
+  }
   
   if (irrecv.decode(&results) && (millis() > (50+start_IR) || start_IR == -1)) {
     String value;
@@ -344,7 +351,7 @@ void loop() {
   if (start_DisplayChange != -1 && currTime >= (start_DisplayChange + 1000)) {
 //    Serial.println("It is time to update the display after waiting");
 //    Serial.println("Update display 2");
-    updateDisplay();
+//    updateDisplay();
     start_DisplayChange = -1;
   }
 
