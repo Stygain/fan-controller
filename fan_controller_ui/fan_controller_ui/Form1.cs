@@ -29,18 +29,37 @@ namespace fan_controller_ui_window
             statusLabel.Text = "Status Good";
 
             sendButton.Click += new System.EventHandler(this.send_click);
+            send_time_loop();
+        }
+
+        private void send_time_loop()
+        {
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromMinutes(1);
+
+            var timer = new System.Threading.Timer((e) =>
+            {
+                var current_time = get_time();
+                Console.WriteLine(current_time + "");
+                send_serial_data(current_time + "", '%');
+            }, null, startTimeSpan, periodTimeSpan);
+        }
+
+        private string get_time()
+        {
+            return DateTime.Now.ToString("h:m");
         }
 
         private void send_click(object sender, EventArgs e)
         {
             Console.WriteLine(fanSpeedBar.Value + "");
-            send_serial_data(fanSpeedBar.Value + "");
+            send_serial_data(fanSpeedBar.Value + "", ';');
         }
 
-        private void send_serial_data(String serial_data)
+        private void send_serial_data(String serial_data, char delim)
         {
             port.Open();
-            port.Write(serial_data + ";");
+            port.Write(serial_data + delim);
             port.Close();
         }
     }

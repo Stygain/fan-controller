@@ -56,6 +56,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 239);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(284, 22);
+            this.statusStrip1.Stretch = false;
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -68,13 +69,13 @@
             // 
             // fanSpeedBar
             // 
-            this.fanSpeedBar.LargeChange = 2;
+            this.fanSpeedBar.LargeChange = 1;
             this.fanSpeedBar.Location = new System.Drawing.Point(0, 70);
             this.fanSpeedBar.Maximum = 9;
             this.fanSpeedBar.Name = "fanSpeedBar";
             this.fanSpeedBar.Size = new System.Drawing.Size(284, 45);
             this.fanSpeedBar.TabIndex = 2;
-            this.fanSpeedBar.Value = 5;
+            this.fanSpeedBar.Value = 4;
             // 
             // rbCels
             // 
@@ -129,7 +130,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tempULabel);
             this.Name = "ui_form";
-            this.Text = "Form1";
+            this.Text = "Fan Controller";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fanSpeedBar)).EndInit();

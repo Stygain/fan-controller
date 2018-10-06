@@ -324,6 +324,12 @@ void loop() {
     updateFanDisplay(fanSpeed);
     serial_read = "";
     serial_read_num = "";
+  } else if (serial_read[serial_read.length()-1] == '%') {
+    String time_string = serial_read.substring(0, serial_read.length() - 1);
+    lcd.setCursor(5,1);
+    lcd.print(time_string);
+    serial_read = "";
+    time_string = "";
   }
   
   if (irrecv.decode(&results) && (millis() > (50+start_IR) || start_IR == -1)) {
