@@ -11,9 +11,9 @@
  
 #define transistorPin 6
 
-#define NUM_MODES 2
+//#define NUM_MODES 2
 #define UPPER_FAN_LIMIT 9
-#define FAN_BAR_INDEX 11
+#define FAN_BAR_INDEX 14
 
 dht DHT;
 Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
@@ -113,16 +113,16 @@ void lcdPrintPaddedDecimal(uint8_t value) {
   lcd.print(value, DEC);
 }
 
-void displayMode (int mode) {
-  lcd.clear();
-  lcd.setCursor(0,0);
-  if (mode == 1) {
-    lcd.print("Manual");
-  } else {
-    lcd.print("Auto");
-  }
-  start_DisplayChange = millis();
-}
+//void displayMode (int mode) {
+//  lcd.clear();
+//  lcd.setCursor(0,0);
+//  if (mode == 1) {
+//    lcd.print("Manual");
+//  } else {
+//    lcd.print("Auto");
+//  }
+//  start_DisplayChange = millis();
+//}
 
 void updateFanDisplay (int rate) {
   lcd.setCursor(FAN_BAR_INDEX,0);
@@ -139,17 +139,17 @@ void updateFanDisplay (int rate) {
 }
 
 void changeMode (String irVal, int & mode, int & fanSpeed) {
-  int modeBefore = mode;
+//  int modeBefore = mode;
   int speedBefore = fanSpeed;
-  if (irVal == "ff5aa5") {
-    mode++;
-  } else if (irVal == "ff10ef") {
-    mode--;
-  }
-  mode = (mode + NUM_MODES) % NUM_MODES;
-  if (mode != modeBefore) {
-    displayMode(mode);
-  }
+//  if (irVal == "ff5aa5") {
+//    mode++;
+//  } else if (irVal == "ff10ef") {
+//    mode--;
+//  }
+//  mode = (mode + NUM_MODES) % NUM_MODES;
+//  if (mode != modeBefore) {
+//    displayMode(mode);
+//  }
   
   if (irVal == "ff18e7") {
     if (fanSpeed != UPPER_FAN_LIMIT) {
@@ -180,6 +180,8 @@ void updateDisplay () {
 //  Serial.println(fahTemp);
   lcd.clear();
   lcd.setCursor(0,0);
+  lcd.print(current_time);
+  lcd.setCursor(current_time.length() + 1,0);
   lcd.print(cTemp1Character);
   if (tempUnit == 'F') {
     lcd.print(fahTemp, DEC);
@@ -190,19 +192,19 @@ void updateDisplay () {
     lcd.print('\xdf');
     lcd.print("C ");
   }
-  lcd.print(static_cast<uint8_t>(DHT.humidity), DEC);
-  lcd.print('%');
-  lcd.print(" ");
+  // No need for humidity values
+//  lcd.print(static_cast<uint8_t>(DHT.humidity), DEC);
+//  lcd.print('%');
+  lcd.setCursor(FAN_BAR_INDEX-1,0);
   lcd.print(cFanCharacter);
   updateFanDisplay(fanSpeed);
   lcd.setCursor(0,1);
-  if (mode == 1) {
-    lcd.print("M");
-  } else {
-    lcd.print("A");
-  }
-  lcd.setCursor(2,1);
-  lcd.print(current_time);
+//  if (mode == 1) {
+//    lcd.print("M");
+//  } else {
+//    lcd.print("A");
+//  }
+//  lcd.setCursor(2,1);
 }
 
 void sampleData (int & celTemp, int & fahTemp) {
@@ -313,21 +315,21 @@ void loop() {
 
   if (Serial.available() > 0) {
     int incomingByte = Serial.read();
-//    Serial.print("I received: ");
-//    Serial.println(incomingByte, DEC);
     char char_rec = (char)incomingByte;
     serial_read = serial_read + char_rec;
   }
   if (serial_read[serial_read.length()-1] == ';') {
     String serial_read_num = serial_read.substring(0, serial_read.length() - 1);
-//    lcd.setCursor(5,1);
-//    lcd.print(serial_read_num);
     fanSpeed = serial_read_num.toInt();
     updateFanDisplay(fanSpeed);
     serial_read = "";
     serial_read_num = "";
   } else if (serial_read[serial_read.length()-1] == '%') {
     current_time = serial_read.substring(0, serial_read.length() - 1);
+    serial_read = "";
+    updateDisplay();
+  } else if (serial_read[serial_read.length()-1] == '^') {
+    tempUnit = serial_read.charAt(0);
     serial_read = "";
     updateDisplay();
   }

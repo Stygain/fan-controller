@@ -2,9 +2,10 @@ D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\bin\Debug
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\bin\Debug\fan_controller_ui.exe
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\bin\Debug\fan_controller_ui.pdb
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.csprojResolveAssemblyReference.cache
-D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui_window.ui_form.resources
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.Properties.Resources.resources
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.csproj.GenerateResource.Cache
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.csproj.CoreCompileInputs.cache
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.exe
 D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui.pdb
+D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\bin\Debug\OpenHardwareMonitorLib.dll
+D:\Documents\Arduino\fanController\fan_controller_ui\fan_controller_ui\obj\Debug\fan_controller_ui_window.ui_form.resources

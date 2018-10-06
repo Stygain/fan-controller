@@ -43,7 +43,7 @@
             // tempULabel
             // 
             this.tempULabel.AutoSize = true;
-            this.tempULabel.Location = new System.Drawing.Point(13, 13);
+            this.tempULabel.Location = new System.Drawing.Point(3, 9);
             this.tempULabel.Name = "tempULabel";
             this.tempULabel.Size = new System.Drawing.Size(64, 13);
             this.tempULabel.TabIndex = 0;
@@ -84,13 +84,13 @@
             this.rbCels.Name = "rbCels";
             this.rbCels.Size = new System.Drawing.Size(54, 17);
             this.rbCels.TabIndex = 3;
-            this.rbCels.TabStop = true;
             this.rbCels.Text = "rbCels";
             this.rbCels.UseVisualStyleBackColor = true;
             // 
             // rbFahr
             // 
             this.rbFahr.AutoSize = true;
+            this.rbFahr.Checked = true;
             this.rbFahr.Location = new System.Drawing.Point(105, 30);
             this.rbFahr.Name = "rbFahr";
             this.rbFahr.Size = new System.Drawing.Size(55, 17);
@@ -110,7 +110,7 @@
             // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(197, 213);
+            this.sendButton.Location = new System.Drawing.Point(209, 213);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(75, 23);
             this.sendButton.TabIndex = 6;
