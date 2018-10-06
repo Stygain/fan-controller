@@ -74,6 +74,7 @@ float multiplier = (9.0 / 5.0);
 int fahTemp = 0;
 
 String lastCommand;
+String current_time = "";
 
 void setup() {
   Serial.begin(9600);
@@ -200,7 +201,8 @@ void updateDisplay () {
   } else {
     lcd.print("A");
   }
-  lcd.print(" RPM");
+  lcd.setCursor(2,1);
+  lcd.print(current_time);
 }
 
 void sampleData (int & celTemp, int & fahTemp) {
@@ -318,18 +320,16 @@ void loop() {
   }
   if (serial_read[serial_read.length()-1] == ';') {
     String serial_read_num = serial_read.substring(0, serial_read.length() - 1);
-    lcd.setCursor(5,1);
-    lcd.print(serial_read_num);
+//    lcd.setCursor(5,1);
+//    lcd.print(serial_read_num);
     fanSpeed = serial_read_num.toInt();
     updateFanDisplay(fanSpeed);
     serial_read = "";
     serial_read_num = "";
   } else if (serial_read[serial_read.length()-1] == '%') {
-    String time_string = serial_read.substring(0, serial_read.length() - 1);
-    lcd.setCursor(5,1);
-    lcd.print(time_string);
+    current_time = serial_read.substring(0, serial_read.length() - 1);
     serial_read = "";
-    time_string = "";
+    updateDisplay();
   }
   
   if (irrecv.decode(&results) && (millis() > (50+start_IR) || start_IR == -1)) {

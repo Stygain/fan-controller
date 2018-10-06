@@ -47,7 +47,7 @@ namespace fan_controller_ui_window
 
         private string get_time()
         {
-            return DateTime.Now.ToString("h:m");
+            return DateTime.Now.ToString("h:mm");
         }
 
         private void send_click(object sender, EventArgs e)
