@@ -24,23 +24,24 @@ namespace fan_controller_ui_window
             rbCels.Text = "Celsius";
             rbFahr.Text = "Fahrenheit";
             fanSpeedLabel.Text = "Fan Speed";
-            fanSpeedBar.Value = 5;
+            fanSpeedBar.Value = 4;
             sendButton.Text = "Send";
             statusLabel.Text = "Status Good";
-            port.Open();
 
             sendButton.Click += new System.EventHandler(this.send_click);
         }
 
         private void send_click(object sender, EventArgs e)
         {
-            Console.WriteLine("got clicked");
-            send_serial_data();
+            Console.WriteLine(fanSpeedBar.Value + "");
+            send_serial_data(fanSpeedBar.Value + "");
         }
 
-        private void send_serial_data()
+        private void send_serial_data(String serial_data)
         {
-            port.Write("abcde");
+            port.Open();
+            port.Write(serial_data + ";");
+            port.Close();
         }
     }
 }

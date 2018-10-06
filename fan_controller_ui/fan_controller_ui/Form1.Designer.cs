@@ -70,6 +70,7 @@
             // 
             this.fanSpeedBar.LargeChange = 2;
             this.fanSpeedBar.Location = new System.Drawing.Point(0, 70);
+            this.fanSpeedBar.Maximum = 9;
             this.fanSpeedBar.Name = "fanSpeedBar";
             this.fanSpeedBar.Size = new System.Drawing.Size(284, 45);
             this.fanSpeedBar.TabIndex = 2;
@@ -115,7 +116,7 @@
             this.sendButton.Text = "sendButton";
             this.sendButton.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // ui_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -127,7 +128,7 @@
             this.Controls.Add(this.fanSpeedBar);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tempULabel);
-            this.Name = "Form1";
+            this.Name = "ui_form";
             this.Text = "Form1";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

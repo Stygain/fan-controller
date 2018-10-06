@@ -316,10 +316,14 @@ void loop() {
     char char_rec = (char)incomingByte;
     serial_read = serial_read + char_rec;
   }
-  if (serial_read.length() == 5) {
+  if (serial_read[serial_read.length()-1] == ';') {
+    String serial_read_num = serial_read.substring(0, serial_read.length() - 1);
     lcd.setCursor(5,1);
-    lcd.print(serial_read);
+    lcd.print(serial_read_num);
+    fanSpeed = serial_read_num.toInt();
+    updateFanDisplay(fanSpeed);
     serial_read = "";
+    serial_read_num = "";
   }
   
   if (irrecv.decode(&results) && (millis() > (50+start_IR) || start_IR == -1)) {
@@ -351,7 +355,7 @@ void loop() {
   if (start_DisplayChange != -1 && currTime >= (start_DisplayChange + 1000)) {
 //    Serial.println("It is time to update the display after waiting");
 //    Serial.println("Update display 2");
-//    updateDisplay();
+    updateDisplay();
     start_DisplayChange = -1;
   }
 
