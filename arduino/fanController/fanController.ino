@@ -1,26 +1,26 @@
 #include <Wire.h>
 #include <Adafruit_RGBLCDShield.h>
 #include <utility/Adafruit_MCP23017.h>
-
 #include <dht.h>
 #include <IRremote.h>
 
+// Pins
 #define DHT_P 4
 #define IR_P 2
 #define THERM_P 0
- 
 #define transistorPin 6
 
-//#define NUM_MODES 2
+// Constants
 #define UPPER_FAN_LIMIT 9
 #define FAN_BAR_INDEX 14
 
+// Creation of elements
 dht DHT;
 Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 IRrecv irrecv(IR_P);
 decode_results results;
 
-// Custom characters for the LCD display.
+////// Custom characters for the LCD display.
 const uint8_t cFanCharacterMask[] PROGMEM = {
   0b01100,
   0b01100,
@@ -54,8 +54,9 @@ const uint8_t cTemp2CharacterMask[] PROGMEM = {
   0b01000
 };
 const char cTemp2Character = '\x07';
+////// END Custom characters for the LCD display.
 
-int mode = 0;
+//// Variable creation
 int fanSpeed = 4;
 char tempUnit = 'F';
 
@@ -75,9 +76,14 @@ int fahTemp = 0;
 
 String lastCommand;
 String current_time = "";
+String serial_read = "";
+//// END Variable creation
 
+//// Setup function
 void setup() {
+  // Begin serial communication at 9600 baud
   Serial.begin(9600);
+  
   // Prevents whining of fans
   setPwmFrequency(transistorPin, 8);
   lcd.begin(16, 2);
@@ -99,57 +105,36 @@ void setup() {
   memcpy_P(character, cTemp2CharacterMask, 8);
   lcd.createChar(cTemp2Character, character);
 
+  // Setup the transistor pin as output
   pinMode(transistorPin, OUTPUT);
-  
+
+  // Get the initial data
   sampleData(celTemp, fahTemp);
+
+  // Update the display with the data
   updateDisplay();
+
+  // Update the display with the fan speed
   updateFanDisplay(fanSpeed);
 }
 
-void lcdPrintPaddedDecimal(uint8_t value) {
-  if (value < 10) {
-    lcd.print('0');
-  }
-  lcd.print(value, DEC);
-}
-
-//void displayMode (int mode) {
-//  lcd.clear();
-//  lcd.setCursor(0,0);
-//  if (mode == 1) {
-//    lcd.print("Manual");
-//  } else {
-//    lcd.print("Auto");
-//  }
-//  start_DisplayChange = millis();
-//}
-
+// Print to the LCD the fan speed (denoted by varying sizes of bars)
 void updateFanDisplay (int rate) {
   lcd.setCursor(FAN_BAR_INDEX,0);
   if (rate > 4) {
-//    Serial.println("fan speed greater than 4");
     lcd.print(static_cast<char>(4));
     int tempFanSpeed = rate - 4;
     lcd.print(static_cast<char>(tempFanSpeed-1));
   } else {
-//    Serial.println("fan speed not greater than 4");
     lcd.print(static_cast<char>(rate));
     lcd.print(' ');
   }
 }
 
-void changeMode (String irVal, int & mode, int & fanSpeed) {
-//  int modeBefore = mode;
+// This function handles operations by the user using the IR remote.
+// Updates the display if necessary for the changed operation.
+void changeMode (String irVal, int & fanSpeed) {
   int speedBefore = fanSpeed;
-//  if (irVal == "ff5aa5") {
-//    mode++;
-//  } else if (irVal == "ff10ef") {
-//    mode--;
-//  }
-//  mode = (mode + NUM_MODES) % NUM_MODES;
-//  if (mode != modeBefore) {
-//    displayMode(mode);
-//  }
   
   if (irVal == "ff18e7") {
     if (fanSpeed != UPPER_FAN_LIMIT) {
@@ -175,9 +160,9 @@ void changeMode (String irVal, int & mode, int & fanSpeed) {
   start_IR = millis();
 }
 
+// General display creation and population function.
+// Adds the time, system air temperature, and fan character.
 void updateDisplay () {
-//  Serial.print("Final: ");
-//  Serial.println(fahTemp);
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print(current_time);
@@ -199,36 +184,33 @@ void updateDisplay () {
   lcd.print(cFanCharacter);
   updateFanDisplay(fanSpeed);
   lcd.setCursor(0,1);
-//  if (mode == 1) {
-//    lcd.print("M");
-//  } else {
-//    lcd.print("A");
-//  }
-//  lcd.setCursor(2,1);
 }
 
+// Reads the temperature from the DHT sensor, stores it if it successfully read.
+// Reads from the thermistor and updates the display only if the averages changed.
 void sampleData (int & celTemp, int & fahTemp) {
+  // Attempt to read from the DHT sensor
   int chk = DHT.read11(DHT_P);
   if (chk == 0) {
     CT1 = DHT.temperature;
     float celMult = CT1 * multiplier;
     FT1 = celMult + 32;
-//    Serial.print("T1 ");
-//    Serial.println(FT1);
   }
-  
+
+  // Read from the thermistor
   Vo = analogRead(THERM_P);
   R2 = R1 * (1023.0 / (float)Vo - 1.0);
   logR2 = log(R2);
   T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
   CT2 = T - 273.15;
   FT2 = (CT2 * 9.0)/ 5.0 + 32.0;
-//  Serial.print("T2 ");
-//  Serial.println(FT2);
 
+  // Cache the values
   int celTempCache = celTemp;
   int fahTempCache = fahTemp;
 
+  // Average the temperatures or just use the thermistor
+  // values if DHT was unsuccessful
   if (chk == 0) {
     celTemp = (int)((CT1 + CT2) / 2);
     fahTemp = (int)((FT1 + FT2) / 2);
@@ -237,11 +219,12 @@ void sampleData (int & celTemp, int & fahTemp) {
     fahTemp = (int)FT2;
   }
 
+  // If the values changed, update the display
   if (celTempCache != celTemp || fahTempCache != fahTemp) {
-//    Serial.println("Actually updating 1");
     updateDisplay();
   }
-  
+
+  // Mark when it was last sensed
   start_DHT = millis();
 }
 
@@ -309,64 +292,60 @@ void setPwmFrequency(int pin, int divisor) {
 }
 //end arduino code
 
-String serial_read = "";
-
+// Arduino main loop function
 void loop() {
-
+  // Attempt to read from the serial port and store the characters in serial_read
   if (Serial.available() > 0) {
     int incomingByte = Serial.read();
     char char_rec = (char)incomingByte;
     serial_read = serial_read + char_rec;
   }
+
+  // Check to see if we encountered an end delimiter, if so do an operation with the data.
   if (serial_read[serial_read.length()-1] == ';') {
+    // ';' is the delimiter indicating a change in fan speed, get the value and change the fanSpeed variable
     String serial_read_num = serial_read.substring(0, serial_read.length() - 1);
     fanSpeed = serial_read_num.toInt();
     updateFanDisplay(fanSpeed);
     serial_read = "";
     serial_read_num = "";
   } else if (serial_read[serial_read.length()-1] == '%') {
+    // '%' is the delimiter for the time, set the current_time variable and update the display
     current_time = serial_read.substring(0, serial_read.length() - 1);
     serial_read = "";
     updateDisplay();
   } else if (serial_read[serial_read.length()-1] == '^') {
+    // '^' is the delimiter for the temperature unit, set the temperature unit to what was sent
     tempUnit = serial_read.charAt(0);
     serial_read = "";
     updateDisplay();
   }
-  
+
+  // Handle IR remote input
   if (irrecv.decode(&results) && (millis() > (50+start_IR) || start_IR == -1)) {
     String value;
-//    Serial.print("What we got: ");
-//    Serial.print(results.value, HEX);
-//    Serial.print(" ");
-//    Serial.println(lastCommand);
     if (results.value == 0xFFFFFFFF) {
-//      Serial.println("We got a repeat");
       value = lastCommand;
     } else {
       lastCommand = String(results.value, HEX);
       value = String(results.value, HEX);
     }
-//    Serial.println(results.value, HEX);
-//    Serial.println(value);
-    changeMode(value, mode, fanSpeed);
+    changeMode(value, fanSpeed);
     irrecv.resume();
   }
 
+  // Check the current time against the operations that happen every X milliseconds
+  // Start the operations if it is time
   unsigned long currTime = millis();
   if (start_DHT != -1 && currTime >= (start_DHT + 2000)) {
-//    Serial.println("It is time to sample");
     sampleData(celTemp, fahTemp);
-//    Serial.println("Update display 1");
-//    updateDisplay();
   }
   if (start_DisplayChange != -1 && currTime >= (start_DisplayChange + 1000)) {
-//    Serial.println("It is time to update the display after waiting");
-//    Serial.println("Update display 2");
     updateDisplay();
     start_DisplayChange = -1;
   }
 
+  // Convert the fan speed to a PWM value and write that value to the PWM pins
   int temp_fanSpeed = 10 - fanSpeed;
   int outputValue = map(temp_fanSpeed, 1, 10, 0, 255);
   analogWrite(transistorPin, outputValue);
