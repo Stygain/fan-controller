@@ -42,6 +42,8 @@
             // 
             // tempULabel
             // 
+            this.tempULabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tempULabel.AutoSize = true;
             this.tempULabel.Location = new System.Drawing.Point(3, 9);
             this.tempULabel.Name = "tempULabel";
@@ -53,7 +55,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 239);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 139);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(284, 22);
             this.statusStrip1.Stretch = false;
@@ -69,6 +71,8 @@
             // 
             // fanSpeedBar
             // 
+            this.fanSpeedBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fanSpeedBar.LargeChange = 1;
             this.fanSpeedBar.Location = new System.Drawing.Point(0, 70);
             this.fanSpeedBar.Maximum = 9;
@@ -79,6 +83,8 @@
             // 
             // rbCels
             // 
+            this.rbCels.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rbCels.AutoSize = true;
             this.rbCels.Location = new System.Drawing.Point(13, 30);
             this.rbCels.Name = "rbCels";
@@ -89,6 +95,8 @@
             // 
             // rbFahr
             // 
+            this.rbFahr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rbFahr.AutoSize = true;
             this.rbFahr.Checked = true;
             this.rbFahr.Location = new System.Drawing.Point(105, 30);
@@ -101,6 +109,8 @@
             // 
             // fanSpeedLabel
             // 
+            this.fanSpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fanSpeedLabel.AutoSize = true;
             this.fanSpeedLabel.Location = new System.Drawing.Point(13, 54);
             this.fanSpeedLabel.Name = "fanSpeedLabel";
@@ -110,7 +120,8 @@
             // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(209, 213);
+            this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.sendButton.Location = new System.Drawing.Point(209, 113);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(75, 23);
             this.sendButton.TabIndex = 6;
@@ -121,7 +132,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(284, 161);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.fanSpeedLabel);
             this.Controls.Add(this.rbFahr);
@@ -129,6 +140,7 @@
             this.Controls.Add(this.fanSpeedBar);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tempULabel);
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "ui_form";
             this.Text = "Fan Controller";
             this.statusStrip1.ResumeLayout(false);
