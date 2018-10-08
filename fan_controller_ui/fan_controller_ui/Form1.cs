@@ -34,7 +34,7 @@ namespace fan_controller_ui_window
             sendButton.Click += new System.EventHandler(this.send_click);
             rbCels.Click += new System.EventHandler(this.handle_rb_click);
             rbFahr.Click += new System.EventHandler(this.handle_rb_click);
-            send_time_loop();
+            InitTimer();
         }
 
         private void handle_rb_click(object sender, EventArgs e)
@@ -52,17 +52,20 @@ namespace fan_controller_ui_window
             }
         }
 
-        private void send_time_loop()
+        private Timer timer1;
+        public void InitTimer()
         {
-            var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromMinutes(1);
+            timer1 = new Timer();
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Interval = 60000;
+            timer1.Start();
+        }
 
-            var timer = new System.Threading.Timer((e) =>
-            {
-                var current_time = get_time();
-                //Console.WriteLine(current_time + "");
-                send_serial_data(current_time + "", '%');
-            }, null, startTimeSpan, periodTimeSpan);
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            var current_time = get_time();
+            Console.WriteLine(current_time + "");
+            send_serial_data(current_time + "", '%');
         }
 
         private string get_time()
