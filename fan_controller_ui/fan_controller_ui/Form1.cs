@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Windows.Forms;
@@ -36,7 +37,12 @@ namespace fan_controller_ui_window
             sendButton.Click += new System.EventHandler(this.send_click);
             rbCels.Click += new System.EventHandler(this.handle_rb_click);
             rbFahr.Click += new System.EventHandler(this.handle_rb_click);
-            InitTimer();
+
+
+            ThreadStart childref = new ThreadStart(init_thread_timer);
+            Thread childThread = new Thread(childref);
+            childThread.Start();
+            //init_minute_timer();
 
             string url = "http://rss.cnn.com/rss/cnn_world.rss";
             XmlReader reader = XmlReader.Create(url);
@@ -51,8 +57,17 @@ namespace fan_controller_ui_window
                 //Console.WriteLine("subj: ");
                 Console.WriteLine(subject);
             }
+        }
 
-
+        public void init_thread_timer()
+        {
+            while (true)
+            {
+                var current_time = get_time();
+                Console.WriteLine(current_time + "");
+                send_serial_data(current_time + "", '%');
+                Thread.Sleep(60000);
+            }
         }
 
         private void handle_rb_click(object sender, EventArgs e)
@@ -70,16 +85,16 @@ namespace fan_controller_ui_window
             }
         }
 
-        private Timer timer1;
-        public void InitTimer()
+        private System.Windows.Forms.Timer minute_timer;
+        public void init_minute_timer()
         {
-            timer1 = new Timer();
-            timer1.Tick += new EventHandler(timer1_Tick);
-            timer1.Interval = 60000;
-            timer1.Start();
+            minute_timer = new System.Windows.Forms.Timer();
+            minute_timer.Tick += new EventHandler(minute_timer_Tick);
+            minute_timer.Interval = 60000;
+            minute_timer.Start();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void minute_timer_Tick(object sender, EventArgs e)
         {
             var current_time = get_time();
             Console.WriteLine(current_time + "");
