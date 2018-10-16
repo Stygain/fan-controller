@@ -63,6 +63,7 @@ char tempUnit = 'F';
 long start_DHT = -1;
 long start_DisplayChange = -1;
 long start_IR = -1;
+long start_scroll = -1;
 
 int Vo;
 float R1 = 10000;
@@ -76,7 +77,11 @@ int fahTemp = 0;
 
 String lastCommand;
 String current_time = "";
+String message = "";
 String serial_read = "";
+
+int message_index = 0;
+int scroll_delay = 2000;
 //// END Variable creation
 
 //// Setup function
@@ -160,6 +165,23 @@ void changeMode (String irVal, int & fanSpeed) {
   start_IR = millis();
 }
 
+void scroll_message () {
+  String sub_message = message.substring(message_index, message_index + 16);
+  lcd.setCursor(0,1);
+  lcd.print(sub_message);
+
+  message_index = message_index + 2;
+
+  if (message_index > (message.length() - 16)) {
+    message_index = 0;
+    scroll_delay = 5000;
+    return;
+  }
+  if (message_index > 3) {
+    scroll_delay = 2000;
+  }
+}
+
 // General display creation and population function.
 // Adds the time, system air temperature, and fan character.
 void updateDisplay () {
@@ -184,6 +206,7 @@ void updateDisplay () {
   lcd.print(cFanCharacter);
   updateFanDisplay(fanSpeed);
   lcd.setCursor(0,1);
+//  lcd.print(message);
 }
 
 // Reads the temperature from the DHT sensor, stores it if it successfully read.
@@ -319,6 +342,11 @@ void loop() {
     tempUnit = serial_read.charAt(0);
     serial_read = "";
     updateDisplay();
+  } else if (serial_read[serial_read.length()-1] == '#') {
+    // 
+    message = serial_read.substring(0, serial_read.length() - 1);
+    serial_read = "";
+    updateDisplay();
   }
 
   // Handle IR remote input
@@ -339,6 +367,10 @@ void loop() {
   unsigned long currTime = millis();
   if (start_DHT != -1 && currTime >= (start_DHT + 2000)) {
     sampleData(celTemp, fahTemp);
+  }
+  if (currTime >= (start_scroll + scroll_delay)) {
+    start_scroll = millis();
+    scroll_message();
   }
   if (start_DisplayChange != -1 && currTime >= (start_DisplayChange + 1000)) {
     updateDisplay();

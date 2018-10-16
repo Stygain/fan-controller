@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Windows.Forms;
+using System.Xml;
+using System.ServiceModel.Syndication;
 
 namespace fan_controller_ui_window
 {
@@ -35,6 +37,22 @@ namespace fan_controller_ui_window
             rbCels.Click += new System.EventHandler(this.handle_rb_click);
             rbFahr.Click += new System.EventHandler(this.handle_rb_click);
             InitTimer();
+
+            string url = "http://rss.cnn.com/rss/cnn_world.rss";
+            XmlReader reader = XmlReader.Create(url);
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            reader.Close();
+            foreach (SyndicationItem item in feed.Items)
+            {
+                String subject = item.Title.Text;
+                send_serial_data(subject, '#');
+                break;
+                String summary = item.Summary.Text;
+                //Console.WriteLine("subj: ");
+                Console.WriteLine(subject);
+            }
+
+
         }
 
         private void handle_rb_click(object sender, EventArgs e)
