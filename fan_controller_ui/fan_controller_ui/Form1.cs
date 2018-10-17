@@ -65,7 +65,8 @@ namespace fan_controller_ui_window
         {
             while (true)
             {
-                string url = "http://rss.cnn.com/rss/cnn_world.rss";
+                //string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
+                string url = "https://www.npr.org/rss/rss.php?id=1004";
                 XmlReader reader = XmlReader.Create(url);
                 SyndicationFeed feed = SyndicationFeed.Load(reader);
                 reader.Close();
