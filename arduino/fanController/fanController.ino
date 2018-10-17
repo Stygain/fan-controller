@@ -172,7 +172,7 @@ void scroll_message () {
 
   message_index = message_index + 2;
 
-  if (message_index > (message.length() - 16)) {
+  if (message_index > (message.length() - 15)) {
     message_index = 0;
     scroll_delay = 5000;
     return;
@@ -344,7 +344,12 @@ void loop() {
     updateDisplay();
   } else if (serial_read[serial_read.length()-1] == '#') {
     // 
+    message_index = 0;
+    scroll_delay = 2000;
     message = serial_read.substring(0, serial_read.length() - 1);
+    if ((message.length() % 2) == 1) {
+      message = message + " ";
+    }
     serial_read = "";
     updateDisplay();
   }
