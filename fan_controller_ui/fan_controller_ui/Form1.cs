@@ -38,25 +38,14 @@ namespace fan_controller_ui_window
             sendButton.Click += new System.EventHandler(this.send_click);
             rbCels.Click += new System.EventHandler(this.handle_rb_click);
             rbFahr.Click += new System.EventHandler(this.handle_rb_click);
-
-
+            
             ThreadStart timer_start = new ThreadStart(timer_thread);
             Thread timer_child = new Thread(timer_start);
             timer_child.Start();
 
-            string url = "http://rss.cnn.com/rss/cnn_world.rss";
-            XmlReader reader = XmlReader.Create(url);
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
-            reader.Close();
-            foreach (SyndicationItem item in feed.Items)
-            {
-                String subject = item.Title.Text;
-                send_serial_data(subject, '#');
-                break;
-                String summary = item.Summary.Text;
-                //Console.WriteLine("subj: ");
-                Console.WriteLine(subject);
-            }
+            ThreadStart rss_start = new ThreadStart(rss_thread);
+            Thread rss_child = new Thread(rss_start);
+            rss_child.Start();
         }
 
         public void timer_thread()
@@ -69,6 +58,29 @@ namespace fan_controller_ui_window
                 send_serial_data(current_time + "", '%');
                 m.ReleaseMutex();
                 Thread.Sleep(60000);
+            }
+        }
+
+        public void rss_thread()
+        {
+            while (true)
+            {
+                string url = "http://rss.cnn.com/rss/cnn_world.rss";
+                XmlReader reader = XmlReader.Create(url);
+                SyndicationFeed feed = SyndicationFeed.Load(reader);
+                reader.Close();
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    String subject = item.Title.Text;
+
+                    m.WaitOne();
+                    send_serial_data(subject, '#');
+                    Console.Write("Writing subject: ");
+                    Console.WriteLine(subject);
+                    m.ReleaseMutex();
+                    Thread.Sleep(3 * 60000);
+                    // String summary = item.Summary.Text;
+                }
             }
         }
 
