@@ -22,6 +22,7 @@ namespace fan_controller_ui_window
     {
         // Create the serial port with basic settings
         private SerialPort port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
+        private readonly Mutex m = new Mutex();
 
         public ui_form()
         {
@@ -39,10 +40,9 @@ namespace fan_controller_ui_window
             rbFahr.Click += new System.EventHandler(this.handle_rb_click);
 
 
-            ThreadStart childref = new ThreadStart(init_thread_timer);
-            Thread childThread = new Thread(childref);
-            childThread.Start();
-            //init_minute_timer();
+            ThreadStart timer_start = new ThreadStart(timer_thread);
+            Thread timer_child = new Thread(timer_start);
+            timer_child.Start();
 
             string url = "http://rss.cnn.com/rss/cnn_world.rss";
             XmlReader reader = XmlReader.Create(url);
@@ -59,13 +59,15 @@ namespace fan_controller_ui_window
             }
         }
 
-        public void init_thread_timer()
+        public void timer_thread()
         {
             while (true)
             {
+                m.WaitOne();
                 var current_time = get_time();
                 Console.WriteLine(current_time + "");
                 send_serial_data(current_time + "", '%');
+                m.ReleaseMutex();
                 Thread.Sleep(60000);
             }
         }
@@ -83,22 +85,6 @@ namespace fan_controller_ui_window
                 Console.WriteLine("fahr is clicked");
                 send_serial_data("F", '^');
             }
-        }
-
-        private System.Windows.Forms.Timer minute_timer;
-        public void init_minute_timer()
-        {
-            minute_timer = new System.Windows.Forms.Timer();
-            minute_timer.Tick += new EventHandler(minute_timer_Tick);
-            minute_timer.Interval = 60000;
-            minute_timer.Start();
-        }
-
-        private void minute_timer_Tick(object sender, EventArgs e)
-        {
-            var current_time = get_time();
-            Console.WriteLine(current_time + "");
-            send_serial_data(current_time + "", '%');
         }
 
         private string get_time()
