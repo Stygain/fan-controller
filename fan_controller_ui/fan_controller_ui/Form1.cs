@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Management;
-using OpenHardwareMonitor.Collections;
-using OpenHardwareMonitor.Hardware;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Diagnostics;
 using System.IO.Ports;
 using System.Windows.Forms;
 using System.Xml;
@@ -33,7 +22,6 @@ namespace fan_controller_ui_window
             fanSpeedLabel.Text = "Fan Speed";
             fanSpeedBar.Value = 4;
             sendButton.Text = "Send";
-            statusLabel.Text = "Status Good";
 
             sendButton.Click += new System.EventHandler(this.send_click);
             rbCels.Click += new System.EventHandler(this.handle_rb_click);

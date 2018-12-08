@@ -29,14 +29,11 @@
         private void InitializeComponent()
         {
             this.tempULabel = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.fanSpeedBar = new System.Windows.Forms.TrackBar();
             this.rbCels = new System.Windows.Forms.RadioButton();
             this.rbFahr = new System.Windows.Forms.RadioButton();
             this.fanSpeedLabel = new System.Windows.Forms.Label();
             this.sendButton = new System.Windows.Forms.Button();
-            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fanSpeedBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,24 +47,6 @@
             this.tempULabel.Size = new System.Drawing.Size(64, 13);
             this.tempULabel.TabIndex = 0;
             this.tempULabel.Text = "tempULabel";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 139);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(284, 22);
-            this.statusStrip1.Stretch = false;
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(118, 17);
-            this.statusLabel.Text = "toolStripStatusLabel1";
             // 
             // fanSpeedBar
             // 
@@ -121,7 +100,7 @@
             // sendButton
             // 
             this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.sendButton.Location = new System.Drawing.Point(209, 113);
+            this.sendButton.Location = new System.Drawing.Point(209, 126);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(75, 23);
             this.sendButton.TabIndex = 6;
@@ -138,13 +117,10 @@
             this.Controls.Add(this.rbFahr);
             this.Controls.Add(this.rbCels);
             this.Controls.Add(this.fanSpeedBar);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tempULabel);
             this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "ui_form";
             this.Text = "Fan Controller";
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fanSpeedBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -154,8 +130,6 @@
         #endregion
 
         private System.Windows.Forms.Label tempULabel;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.TrackBar fanSpeedBar;
         private System.Windows.Forms.RadioButton rbCels;
         private System.Windows.Forms.RadioButton rbFahr;
