@@ -102,7 +102,7 @@ namespace fan_controller_ui_window
         private void send_serial_data(String serial_data, char delim)
         {
             port.Open();
-            port.Write(serial_data + delim);
+            port.Write("&" + serial_data + delim);
             port.Close();
         }
     }

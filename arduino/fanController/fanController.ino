@@ -325,33 +325,37 @@ void loop() {
   }
 
   // Check to see if we encountered an end delimiter, if so do an operation with the data.
-  if (serial_read[serial_read.length()-1] == ';') {
+  if (serial_read[serial_read.length()-1] == ';' && serial_read[0] == '&') {
     // ';' is the delimiter indicating a change in fan speed, get the value and change the fanSpeed variable
-    String serial_read_num = serial_read.substring(0, serial_read.length() - 1);
+    String serial_read_num = serial_read.substring(1, serial_read.length() - 1);
     fanSpeed = serial_read_num.toInt();
     updateFanDisplay(fanSpeed);
     serial_read = "";
     serial_read_num = "";
-  } else if (serial_read[serial_read.length()-1] == '%') {
+  } else if (serial_read[serial_read.length()-1] == '%' && serial_read[0] == '&') {
     // '%' is the delimiter for the time, set the current_time variable and update the display
-    current_time = serial_read.substring(0, serial_read.length() - 1);
+    current_time = serial_read.substring(1, serial_read.length() - 1);
     serial_read = "";
     updateDisplay();
-  } else if (serial_read[serial_read.length()-1] == '^') {
+  } else if (serial_read[serial_read.length()-1] == '^' && serial_read[0] == '&') {
     // '^' is the delimiter for the temperature unit, set the temperature unit to what was sent
-    tempUnit = serial_read.charAt(0);
+    tempUnit = serial_read.charAt(1);
     serial_read = "";
     updateDisplay();
-  } else if (serial_read[serial_read.length()-1] == '#') {
+  } else if (serial_read[serial_read.length()-1] == '#' && serial_read[0] == '&') {
     // 
     message_index = 0;
     scroll_delay = 2000;
-    message = serial_read.substring(0, serial_read.length() - 1);
+    message = serial_read.substring(1, serial_read.length() - 1);
     if ((message.length() % 2) == 1) {
       message = message + " ";
     }
     serial_read = "";
     updateDisplay();
+  } else {
+    if (serial_read[0] != '&') {
+      serial_read = "";
+    }
   }
 
   // Handle IR remote input
